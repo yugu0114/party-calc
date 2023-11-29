@@ -1,0 +1,12 @@
+@import "colors.scss";
+
+.pc-table {
+  & ._highlighted {
+    background: $highlight-color;
+    padding: 0;
+  }
+
+  & ._hidden {
+    display: none;
+  }
+}
