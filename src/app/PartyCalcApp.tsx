@@ -12,9 +12,9 @@ const PartyCalcApp: FC = () => {
     };
 
     return <>
-        {labels.showDetails}: <Switch onChange={onShowDetailsChange}/>
-
         <PartyCalcBillsContainer/>
+
+        {labels.showDetails}: <Switch onChange={onShowDetailsChange}/>
         <PartyCalcResultComponent showDetails={showDetails}/>
     </>;
 }

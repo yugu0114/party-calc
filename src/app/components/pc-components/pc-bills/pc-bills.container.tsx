@@ -12,7 +12,9 @@ const PartyCalcBillsContainer: FC = () => {
     //     // dispatch(loadTitles);
     // }, [dispatch]);
 
-    const titles: string[] = [];
+    const titles: string[] = [
+        "food", "drinks"
+    ];
     const fullData: PartyCalcTableDataMap = new Map<string, PartyCalcTableData[]>();
 
     const productsChange = () => {

@@ -12,5 +12,6 @@ export enum labels {
     showDetails = 'Show Details',
     from = 'From',
     to = 'To',
-    amount = 'Amount'
+    amount = 'Amount',
+    actions = 'Actions'
 };

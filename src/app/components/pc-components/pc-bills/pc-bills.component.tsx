@@ -1,7 +1,8 @@
 import {FC} from 'react';
 import React from 'react';
 import {PartyCalcEditableColumnType, PartyCalcTableDataMap} from "../../../models/pc-types.model";
-import {Button, Dropdown} from "antd";
+import {Button, Dropdown, Tabs, TabsProps} from "antd";
+import type { MenuProps } from 'antd';
 import {labels} from "../../../enums/labels";
 import {PartyCalcTableData} from "../../../models/pc-table.model";
 import PartyCalcTableComponent from "../../common/pc-table/pc-table.component";
@@ -15,23 +16,13 @@ interface PartyCalcBillsProps {
 
 const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
     {
-        titles,
+        titles=[],
         tableDataMap,
         onProductsChange,
         onNamesChange
     }
 ) => {
-    const openAddProductPopup = () => {
-        // open popup
-        // ...
-        // onProductsChange()
-    };
-
-    const  openRemoveProductPopup = () => {
-        // open popup
-        // ...
-        // onNamesChange()
-    };
+    let selectedTabName = titles[0];
 
     const columns: PartyCalcEditableColumnType[] = [
         {
@@ -49,6 +40,7 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
             title: labels.payForMembers,
             dataIndex: 'payForMembers',
             key: 'payForMembers',
+            width: '10%',
             editable: true,
         },
         {
@@ -61,28 +53,74 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
         // remove button render
     ];
 
-    let selectedTabName = "";
+    const actionsMenu: MenuProps['items'] = [
+        {
+            key: '1',
+            label: <Button onClick={(event: any) => openAddProductPopup(event)}>
+                {labels.add}
+            </Button>
+        },
+        {
+            key: '2',
+            label: <Button onClick={(event: any) => openRemoveProductPopup(event)}>
+                {labels.remove}
+            </Button>
+        },
+    ];
+
+    const openAddProductPopup = (event: Event) => {
+        // open popup
+        // ...
+        // onProductsChange()
+        console.log("openAddProductPopup", selectedTabName);
+        event.preventDefault();
+    };
+
+    const  openRemoveProductPopup = (event: Event) => {
+        // open popup
+        // ...
+        // onNamesChange()
+        console.log("openRemoveProductPopup ", selectedTabName);
+        event.preventDefault();
+    };
+
+    const onTabChange = (key: string) => {
+        const keyNumber = Number(key);
+        if (keyNumber < titles?.length) {
+            selectedTabName = titles[keyNumber];
+        }
+        console.log("onTabChange=", keyNumber, selectedTabName);
+    };
+
+    const openAddNamePopup = () => {
+        console.log("openAddNamePopup ", selectedTabName);
+    };
+
+    const getTabsItems = (titles: string[]) => {
+        const result: TabsProps['items'] = titles.map((title, index) => {
+            return {
+                key: index.toString(),
+                label: title,
+                children:
+                    <div className='pc-products__tab'>
+                        {title}
+                    </div>
+            };
+        });
+        return result;
+    }
 
     return <>
-
-        <div className='pc-products'>
-            {/*for()*/}
-            {/*<Tabs>*/}
-            {/*/!*<div>{title[i]}</div>*!/ // header*/}
-            <div className='pc-products__actions'>
-                {/*<Dropdown>*/}
-                {/*    <Button type="primary"*/}
-                {/*            onClick={openAddProductPopup}>*/}
-                {/*        {labels.add}*/}
-                {/*    </Button>*/}
-                {/*    <Button onClick={openRemoveProductPopup}>*/}
-                {/*        {labels.remove}*/}
-                {/*    </Button>*/}
-                {/*</Dropdown>*/}
-            </div>
+        <div className='pc-products__tabs'>
+            <Tabs defaultActiveKey="0" items={getTabsItems(titles)} onChange={onTabChange}/>
+            <Dropdown menu={{ items : actionsMenu}} trigger={['click']}>
+                <a onClick={(e) => e.preventDefault()}>
+                    ...
+                </a>
+            </Dropdown>
         </div>
 
-        <Button>{labels.add + labels.name}</Button>
+        <Button onClick={openAddNamePopup}>{labels.add + labels.name}</Button>
         <PartyCalcTableComponent columns={columns}
                                  data={tableDataMap.get(selectedTabName) || []}
         ></PartyCalcTableComponent>

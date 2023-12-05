@@ -41,7 +41,7 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
             title: labels.expectedExpense,
             dataIndex: 'expectedExpense',
             key: 'expectedExpense',
-            className: !showDetails ? '_hidden' : ''
+            width: '20%',
         },
     ];
 
@@ -78,7 +78,7 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
     const totalOutputData: PartyCalcResultData[] = [];// service result!!!!!!!!!
 
     return <>
-        if (showDetails) {
+        {showDetails &&
             <div className='pc-result__details'>
 
                 // for each tab
