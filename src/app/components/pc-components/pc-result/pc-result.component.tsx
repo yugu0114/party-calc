@@ -44,33 +44,60 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
         },
     ];
 
-    const resultColumns: PartyCalcEditableColumnType[] = [
-        {
-            title: labels.from,
-            dataIndex: 'from',
-            key: 'from',
-            width: '30%',
-            // ...getColumnSearchProps('from'),
-            //@ts-ignore
-            sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
-            sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: labels.to,
-            dataIndex: 'to',
-            key: 'to',
-            width: '30%',
-            // ...getColumnSearchProps('to'),
-            //@ts-ignore
-            sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
-            sortDirections: ['descend', 'ascend'],
-        },
-        {
-            title: labels.amount,
-            dataIndex: 'amount',
-            key: 'amount',
-        },
-    ];
+    const getResultColumns = ():PartyCalcEditableColumnType[] =>{
+        // const resultColumns: PartyCalcEditableColumnType[] = [
+        //     {
+        //         title: labels.from,
+        //         dataIndex: 'from',
+        //         key: 'from',
+        //         width: '30%',
+        //         //@ts-ignore
+        //         sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
+        //         sortDirections: ['descend', 'ascend'],
+        //     },
+        //     {
+        //         title: labels.to,
+        //         dataIndex: 'to',
+        //         key: 'to',
+        //         width: '30%',
+        //         //@ts-ignore
+        //         sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
+        //         sortDirections: ['descend', 'ascend'],
+        //     },
+        //     {
+        //         title: labels.amount,
+        //         dataIndex: 'amount',
+        //         key: 'amount',
+        //     },
+        // ];
+        // return  JSON.parse(JSON.stringify(resultColumns));  // [...resultColumns] is SHALLOW COPY
+
+        return [
+            {
+                title: labels.from,
+                dataIndex: 'from',
+                key: 'from',
+                width: '30%',
+                //@ts-ignore
+                sorter: (a: PartyCalcTableData, b: PartyCalcTableData) => a.name.length - b.name.length,
+                sortDirections: ['descend', 'ascend'],
+            },
+            {
+                title: labels.to,
+                dataIndex: 'to',
+                key: 'to',
+                width: '30%',
+                //@ts-ignore
+                sorter: (a: PartyCalcTableData, b: PartyCalcTableData) => a.name.length - b.name.length,
+                sortDirections: ['descend', 'ascend'],
+            },
+            {
+                title: labels.amount,
+                dataIndex: 'amount',
+                key: 'amount',
+            }
+        ];
+    }
 
     const inputTabData: PartyCalcTableData[] = [];// service pre calc result per one tab
     const outputTabData: PartyCalcResultData[] = [];// service result per one tab
@@ -85,20 +112,20 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
 
                 <PartyCalcTableComponent columns={preCalcColumns}
                                          data={inputTabData}
-                                         dataIndex={"name"}
+                                         dataIndexes={["name"]}
                 ></PartyCalcTableComponent>
 
-                <PartyCalcTableComponent columns={resultColumns}
+                <PartyCalcTableComponent columns={getResultColumns()}
                                          data={outputTabData}
-                                         dataIndex={"from"}
+                                         dataIndexes={["from", "to"]}
                 ></PartyCalcTableComponent>
             </div>
         }
 
         // sum for all tabs!!!!
-        <PartyCalcTableComponent columns={resultColumns}
+        <PartyCalcTableComponent columns={getResultColumns()}
                                  data={totalOutputData}
-                                 dataIndex={"from"}
+                                 dataIndexes={["from", "to"]}
         ></PartyCalcTableComponent>
         </>;
 }

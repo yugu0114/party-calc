@@ -120,7 +120,7 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
         <Button onClick={openAddNamePopup}>{labels.add + labels.name}</Button>
         <PartyCalcTableComponent columns={columns}
                                  data={tableDataMap.get(selectedTabName) || []}
-                                 dataIndex={"name"}
+                                 dataIndexes={["name"]}
         ></PartyCalcTableComponent>
     </>;
 }
