@@ -2,7 +2,7 @@ import {FC} from 'react';
 import React from 'react';
 import {PartyCalcEditableColumnType, PartyCalcTableDataMap} from "../../../models/pc-types.model";
 import {Button, Dropdown, Tabs, TabsProps} from "antd";
-import type { MenuProps } from 'antd';
+import type {MenuProps} from 'antd';
 import {labels} from "../../../enums/labels";
 import {PartyCalcTableData} from "../../../models/pc-table.model";
 import PartyCalcTableComponent from "../../common/pc-table/pc-table.component";
@@ -16,7 +16,7 @@ interface PartyCalcBillsProps {
 
 const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
     {
-        titles=[],
+        titles = [],
         tableDataMap,
         onProductsChange,
         onNamesChange
@@ -31,7 +31,7 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
             key: 'name',
             width: '30%',
             //@ts-ignore
-            sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
+            sorter: (a: PartyCalcTableData, b: PartyCalcTableData) => a.name.length - b.name.length,
             sortDirections: ['descend', 'ascend'],
         },
         {
@@ -73,7 +73,7 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
         event.preventDefault();
     };
 
-    const  openRemoveProductPopup = (event: Event) => {
+    const openRemoveProductPopup = (event: Event) => {
         // open popup
         // ...
         // onNamesChange()
@@ -110,7 +110,7 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
     return <>
         <div className='pc-products__tabs'>
             <Tabs defaultActiveKey="0" items={getTabsItems(titles)} onChange={onTabChange}/>
-            <Dropdown menu={{ items : actionsMenu}} trigger={['click']}>
+            <Dropdown menu={{items: actionsMenu}} trigger={['click']}>
                 <a onClick={(e) => e.preventDefault()}>
                     ...
                 </a>

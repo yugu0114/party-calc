@@ -61,11 +61,11 @@ const PartyCalcTableComponent: FC<PartyCalcTableComponentProps> = (
         dataIndexes?.forEach(dataIndex => {
             const mainColumn = columns.find(col => col.dataIndex === dataIndex) as Object;
 
-            if(dataIndex === "test123") {
+            if (dataIndex === "test123") {
                 console.log(dataIndex);
             }
 
-            if(dataIndex === "from") {
+            if (dataIndex === "from") {
                 console.log(dataIndex);
             }
 
@@ -157,7 +157,7 @@ const PartyCalcTableComponent: FC<PartyCalcTableComponentProps> = (
 
     return <Table className='pc-table'
                   bordered
-                  // rowSelection={rowSelection}
+        // rowSelection={rowSelection}
                   columns={getColumns()}
                   dataSource={data}/>;
     // paginator

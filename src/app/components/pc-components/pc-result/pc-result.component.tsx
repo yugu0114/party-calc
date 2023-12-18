@@ -21,7 +21,7 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
             key: 'name',
             width: '30%',
             //@ts-ignore
-            sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
+            sorter: (a: PartyCalcTableData, b: PartyCalcTableData) => a.name.length - b.name.length,
             sortDirections: ['descend', 'ascend'],
         },
         {
@@ -44,7 +44,7 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
         },
     ];
 
-    const getResultColumns = ():PartyCalcEditableColumnType[] =>{
+    const getResultColumns = (): PartyCalcEditableColumnType[] => {
         // const resultColumns: PartyCalcEditableColumnType[] = [
         //     {
         //         title: labels.from,
@@ -105,21 +105,21 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
 
     return <>
         {showDetails &&
-            <div className='pc-result__details'>
+        <div className='pc-result__details'>
 
-                // for each tab
-                // name of tab, total count, total mew members, per person, who is fine (delta is 0)
+            // for each tab
+            // name of tab, total count, total mew members, per person, who is fine (delta is 0)
 
-                <PartyCalcTableComponent columns={preCalcColumns}
-                                         data={inputTabData}
-                                         dataIndexes={["name"]}
-                ></PartyCalcTableComponent>
+            <PartyCalcTableComponent columns={preCalcColumns}
+                                     data={inputTabData}
+                                     dataIndexes={["name"]}
+            ></PartyCalcTableComponent>
 
-                <PartyCalcTableComponent columns={getResultColumns()}
-                                         data={outputTabData}
-                                         dataIndexes={["from", "to"]}
-                ></PartyCalcTableComponent>
-            </div>
+            <PartyCalcTableComponent columns={getResultColumns()}
+                                     data={outputTabData}
+                                     dataIndexes={["from", "to"]}
+            ></PartyCalcTableComponent>
+        </div>
         }
 
         // sum for all tabs!!!!
@@ -127,7 +127,7 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
                                  data={totalOutputData}
                                  dataIndexes={["from", "to"]}
         ></PartyCalcTableComponent>
-        </>;
+    </>;
 }
 
 export default PartyCalcResultComponent;
