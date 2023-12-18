@@ -14,6 +14,7 @@ import {PartyCalcEditableColumnType} from "../../../models/pc-types.model";
 interface PartyCalcTableComponentProps {
     columns: PartyCalcEditableColumnType[],
     data: PartyCalcTableData[] | PartyCalcResultData[];
+    dataIndex: string,
     onSelectedChange?: (value: boolean) => void;
 }
 
@@ -23,6 +24,7 @@ const PartyCalcTableComponent: FC<PartyCalcTableComponentProps> = (
     {
         columns,
         data,
+        dataIndex,
         onSelectedChange
     }
 ) => {
@@ -50,97 +52,105 @@ const PartyCalcTableComponent: FC<PartyCalcTableComponentProps> = (
     const handleSearch = (
         selectedKeys: string[],
         confirm: (param?: FilterConfirmProps) => void,
-        dataIndex: DataIndex,
+        dataIndex: string,
     ) => {
         confirm();
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
     };
 
-    //TODO: move to a helper
-    // @ts-ignore
-    const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<PartyCalcTableData> => ({
-        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, close}) => (
-            <div style={{padding: 8}} onKeyDown={(e) => e.stopPropagation()}>
-                <Input
-                    ref={searchInput}
-                    placeholder={labels.search + ` ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-                    style={{marginBottom: 8, display: 'block'}}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-                        icon={<SearchOutlined/>}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        {labels.search}
-                    </Button>
-                    <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
-                        size="small"
-                        style={{width: 90}}
-                    >
-                        {labels.reset}
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({closeDropdown: false});
-                            setSearchText((selectedKeys as string[])[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        {labels.filter}
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            close();
-                        }}
-                    >
-                        {labels.close}
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered: boolean) => (
-            <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>
-        ),
-        onFilter: (value, record) =>
-            //@ts-ignore
-             record ? record[dataIndex]
-                .toString()
-                .toLowerCase()
-                .includes((value as string).toLowerCase()) : false,
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-        render: (text) =>
-            searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightClassName='_highlighted'
-                    searchWords={[searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ''}
-                />
-            ) : (
-                text
-            ),
-    });
+    const getColumns = (): PartyCalcEditableColumnType[] => {
+        const mainColumn = columns.find(col => col.dataIndex === dataIndex) as Object;
+
+        if(mainColumn) {
+            const filterProps: ColumnType<PartyCalcTableData> = {
+                filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, close}) => (
+                    <div style={{padding: 8}} onKeyDown={(e) => e.stopPropagation()}>
+                        <Input
+                            ref={searchInput}
+                            placeholder={labels.search + ` ${dataIndex}`}
+                            value={selectedKeys[0]}
+                            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                            onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                            style={{marginBottom: 8, display: 'block'}}
+                        />
+                        <Space>
+                            <Button
+                                type="primary"
+                                onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                                icon={<SearchOutlined/>}
+                                size="small"
+                                style={{width: 90}}
+                            >
+                                {labels.search}
+                            </Button>
+                            <Button
+                                onClick={() => clearFilters && handleReset(clearFilters)}
+                                size="small"
+                                style={{width: 90}}
+                            >
+                                {labels.reset}
+                            </Button>
+                            <Button
+                                type="link"
+                                size="small"
+                                onClick={() => {
+                                    confirm({closeDropdown: false});
+                                    setSearchText((selectedKeys as string[])[0]);
+                                    setSearchedColumn(dataIndex);
+                                }}
+                            >
+                                {labels.filter}
+                            </Button>
+                            <Button
+                                type="link"
+                                size="small"
+                                onClick={() => {
+                                    close();
+                                }}
+                            >
+                                {labels.close}
+                            </Button>
+                        </Space>
+                    </div>
+                ),
+                filterIcon: (filtered: boolean) => (
+                    <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>
+                ),
+                onFilter: (value, record) =>
+                    //@ts-ignore
+                    record ? record[dataIndex]
+                        .toString()
+                        .toLowerCase()
+                        .includes((value as string).toLowerCase()) : false,
+                onFilterDropdownOpenChange: (visible) => {
+                    if (visible) {
+                        setTimeout(() => searchInput.current?.select(), 100);
+                    }
+                },
+                render: (text) =>//11 input render
+                    searchedColumn === dataIndex ? (
+                        <Highlighter
+                            highlightClassName='_highlighted'
+                            searchWords={[searchText]}
+                            autoEscape
+                            textToHighlight={text ? text.toString() : ''}
+                        />
+                    ) : (
+                        text
+                    ),
+            };
+
+            Object.assign(mainColumn, filterProps); // Object.assign( {a:1, b:2}, {b:3, d:4} ) => {a:1, b:3, d:4} and CHANGES the first object
+        }
+
+        return columns;
+    }
 
     return <Table className='pc-table'
                   bordered
                   // rowSelection={rowSelection}
-                  columns={columns}
+                  columns={getColumns()}
                   dataSource={data}/>;
     // paginator
 };

@@ -30,11 +30,9 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
             dataIndex: 'name',
             key: 'name',
             width: '30%',
-            // ...getColumnSearchProps('name'),
             //@ts-ignore
             sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
             sortDirections: ['descend', 'ascend'],
-            // editable: false
         },
         {
             title: labels.payForMembers,
@@ -50,7 +48,6 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
             width: '20%',
             editable: true,
         },
-        // remove button render
     ];
 
     const actionsMenu: MenuProps['items'] = [
@@ -123,6 +120,7 @@ const PartyCalcBillsComponent: FC<PartyCalcBillsProps> = (
         <Button onClick={openAddNamePopup}>{labels.add + labels.name}</Button>
         <PartyCalcTableComponent columns={columns}
                                  data={tableDataMap.get(selectedTabName) || []}
+                                 dataIndex={"name"}
         ></PartyCalcTableComponent>
     </>;
 }

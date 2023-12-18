@@ -13,7 +13,7 @@ const PartyCalcBillsContainer: FC = () => {
     // }, [dispatch]);
 
     const titles: string[] = [
-        "food", "drinks"
+        "food", "drinks" //11
     ];
     const fullData: PartyCalcTableDataMap = new Map<string, PartyCalcTableData[]>();
 

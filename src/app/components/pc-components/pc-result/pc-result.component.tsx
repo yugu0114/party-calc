@@ -20,7 +20,6 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
             dataIndex: 'name',
             key: 'name',
             width: '30%',
-            // ...getColumnSearchProps('name'),
             //@ts-ignore
             sorter: (a:PartyCalcTableData, b:PartyCalcTableData) => a.name.length - b.name.length,
             sortDirections: ['descend', 'ascend'],
@@ -86,10 +85,12 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
 
                 <PartyCalcTableComponent columns={preCalcColumns}
                                          data={inputTabData}
+                                         dataIndex={"name"}
                 ></PartyCalcTableComponent>
 
                 <PartyCalcTableComponent columns={resultColumns}
                                          data={outputTabData}
+                                         dataIndex={"from"}
                 ></PartyCalcTableComponent>
             </div>
         }
@@ -97,6 +98,7 @@ const PartyCalcResultComponent: FC<PartyCalcResultComponentProps> = (
         // sum for all tabs!!!!
         <PartyCalcTableComponent columns={resultColumns}
                                  data={totalOutputData}
+                                 dataIndex={"from"}
         ></PartyCalcTableComponent>
         </>;
 }
